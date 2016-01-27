@@ -1,0 +1,19 @@
+﻿Parser(outs, nregs) ::= <<
+namespace Project.PLCComm
+{
+    public enum Tag
+    {
+        <outs:{out | <out.Name>}; wrap, separator=", ">
+    }
+
+    partial class PLCReader
+    {
+        static readonly ushort Nregs = <nregs>;
+
+        static void Parse(IDictionary\<Tag, object> dict, ushort[] regs)
+        {
+            <outs:{out | dict[Tags.<out.Name>] = <out.ConversionName>(data, <out.ConversionArgs; separator=", ">); // <out.Comment><\n>}>
+        }
+    }
+}
+>>

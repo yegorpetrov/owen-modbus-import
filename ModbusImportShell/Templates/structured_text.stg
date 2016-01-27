@@ -1,0 +1,19 @@
+﻿typeMap ::= [
+	"GetBit":"BOOL",
+	"GetInt8":"SINT",
+	"GetUInt8":"USINT",
+	"GetInt16":"INT",
+	"GetUInt16":"UINT",
+	"GetInt32":"DINT",
+	"GetUInt32":"UDINT",
+	"GetFloat":"REAL",
+	default:"ANY"
+]
+
+Parser(outs, nregs) ::= <<
+VAR
+	<outs:{out | <out.Name>: <typeMap.(out.ConversionName)>;  // <out.Comment><\n>}>
+END_VAR
+
+<outs:{out | <out.Name> := <out.ConversionName>(ADR(REGS), <out.ConversionArgs; separator=", ">);<\n>}>
+>>

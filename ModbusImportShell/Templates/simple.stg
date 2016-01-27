@@ -1,0 +1,5 @@
+﻿// Valid out properties are: Name, IecAddress, RegOffset, Comment, ConversionName, ConversionArgs
+
+Parser(outs, nregs) ::= <<
+<outs:{out | <out.Name>, <out.ConversionName>, <out.ConversionArgs; separator=", ">, "<out.Comment>"<\n>}>
+>>

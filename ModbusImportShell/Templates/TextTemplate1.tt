@@ -1,0 +1,72 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".txt" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(ProjectDir)bin\Debug\ModbusImport.Dll" #>
+<#@ import namespace="ModbusImport" #>
+<#@ import namespace="ModbusImport.Output" #>
+<#@ import namespace="ModbusImport.Refine" #>
+<#
+
+
+
+	var pro = @"e:\testdata\cdscodegen_data";
+	var store = ObjectStoreFactory.CreateFromPath(pro);
+
+	ushort Nregs = 0;
+	Action<ushort> count = u => Nregs = u;
+	
+	var slave = MbImpUtils.EnumModbusSlaveNodes(store).Take(1);
+	var points = MbImpUtils.ParseSlaveNode(slave.FirstOrDefault(), count);
+
+	var refinery = new IRefine[]
+	{
+		new RefineBitAccessFromConfig(slave),
+		new RefineUnused(),
+		new FixCommentEncoding(Encoding.GetEncoding(1251), Encoding.GetEncoding(1252))
+	};
+
+	foreach (var refiner in refinery)
+	{
+		points = refiner.Refine(points);
+	}
+	points = points.ToArray();
+
+	
+
+
+#>
+namespace Project.PLCComm
+{
+	public enum Tag
+	{
+		<#= // Line-wrap by N
+
+		 string.Join("\r\n\t\t",
+				points.Select(p => p.Name)
+					.Select((x, i) => new { Index = i, Value = x })
+					.GroupBy(x => x.Index / 8).Select(group => string.Join(", ", group.Select(v => v.Value)))
+					) #>
+	}
+
+	partial class PLCReader
+	{
+		static readonly ushort Nregs = <#= Nregs #>;
+
+		static void Parse(IDictionary<Tag, object> dict, ushort[] regs)
+		{
+			<#= string.Join("\r\n\t\t\t", points.Select(p =>
+			{
+				var args = string.Join(", ", p.ConversionArgs.ToArray());
+
+                return string.Format("dict[Tag.{0}] = {1}(data, {2}); // {3}",
+                    p.Name, p.ConversionName, args, p.Comment);
+			})) #>
+		}
+	}
+}
