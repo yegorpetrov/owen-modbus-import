@@ -79,7 +79,14 @@ namespace ModbusImportShell
                         Err.WriteLine("Input file/directory {0} not found.", i);
                         Environment.Exit(-1);
                     }
-                    else project = i;
+                    else
+                    {
+                        project = i;
+                        if (!Path.IsPathRooted(project))
+                        {
+                            project = Path.Combine(Environment.CurrentDirectory, project);
+                        }
+                    }
                 })
                 .Required()
                 .WithDescription("A .pro file or dump directory to process");
