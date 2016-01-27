@@ -85,7 +85,7 @@ namespace ModbusImport
                 ), regCount);
         }
 
-        public static bool CheckSlaveAddress(XElement el, int address)
+        public static int? GetSlaveAddress(XElement el)
         {
             var addrNode = el
                 .Elements("common-properties")
@@ -94,7 +94,12 @@ namespace ModbusImport
                 .Where(x => (string)x.Attribute("id") == "1200")
                 .Elements("value").FirstOrDefault();
 
-            return addrNode != null && addrNode.Value == address.ToString();
+            return el == null ? null : (int?)int.Parse(addrNode.Value);
+        }
+
+        public static bool CheckSlaveAddress(XElement el, int address)
+        {
+            return GetSlaveAddress(el) == address;
         }
 
         public static bool CheckSlaveComment(XElement el, string comment)

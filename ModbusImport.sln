@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusImport", "ModbusImpor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusImportShell", "ModbusImportShell\ModbusImportShell.csproj", "{2861F459-A8FB-4236-879D-5314DCF16015}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusImportSample", "ModbusImportSample\ModbusImportSample.csproj", "{66868E02-567C-483B-AAE7-E69375B3E198}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2861F459-A8FB-4236-879D-5314DCF16015}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2861F459-A8FB-4236-879D-5314DCF16015}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2861F459-A8FB-4236-879D-5314DCF16015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66868E02-567C-483B-AAE7-E69375B3E198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66868E02-567C-483B-AAE7-E69375B3E198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66868E02-567C-483B-AAE7-E69375B3E198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66868E02-567C-483B-AAE7-E69375B3E198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

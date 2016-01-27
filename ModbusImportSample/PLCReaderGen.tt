@@ -1,5 +1,5 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ output extension=".txt" #>
+<#@ output extension=".cs" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml" #>
 <#@ assembly name="System.Xml.Linq" #>
@@ -7,22 +7,24 @@
 <#@ import namespace="System.Xml.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ assembly name="$(ProjectDir)bin\Debug\ModbusImport.Dll" #>
+<#@ assembly name="$(SolutionDir)ModbusImport\bin\Debug\ModbusImport.Dll" #>
 <#@ import namespace="ModbusImport" #>
 <#@ import namespace="ModbusImport.Output" #>
 <#@ import namespace="ModbusImport.Refine" #>
 <#
 
 
-
-	var pro = @"e:\testdata\cdscodegen_data";
+	// CHANGE ME! Make sure the project can be opened in CoDeSys without any messages
+	var pro = @"E:\testdata\sample_plc160m.pro";
+	
 	var store = ObjectStoreFactory.CreateFromPath(pro);
-
 	ushort Nregs = 0;
 	Action<ushort> count = u => Nregs = u;
 	
 	var slave = MbImpUtils.EnumModbusSlaveNodes(store).Take(1);
-	var points = MbImpUtils.ParseSlaveNode(slave.FirstOrDefault(), count);
+	var selectedSlave = slave.FirstOrDefault();
+	var addr = MbImpUtils.GetSlaveAddress(selectedSlave);
+	var points = MbImpUtils.ParseSlaveNode(selectedSlave, count);
 
 	var refinery = new IRefine[]
 	{
@@ -41,13 +43,17 @@
 
 
 #>
-namespace Project.PLCComm
+/* Generated file. Don't edit. */
+
+using System.Collections.Generic;
+
+namespace ModbusImportSample
 {
 	public enum Tag
 	{
 		<#= // Line-wrap by N
 
-		 string.Join("\r\n\t\t",
+		 string.Join(",\r\n\t\t",
 				points.Select(p => p.Name)
 					.Select((x, i) => new { Index = i, Value = x })
 					.GroupBy(x => x.Index / 8).Select(group => string.Join(", ", group.Select(v => v.Value)))
@@ -56,7 +62,8 @@ namespace Project.PLCComm
 
 	partial class PLCReader
 	{
-		static readonly ushort Nregs = <#= Nregs #>;
+		static readonly ushort nregs = <#= Nregs #>;
+		static readonly byte addr = <#= addr #>;
 
 		static void Parse(IDictionary<Tag, object> dict, ushort[] regs)
 		{
@@ -64,7 +71,7 @@ namespace Project.PLCComm
 			{
 				var args = string.Join(", ", p.ConversionArgs.ToArray());
 
-                return string.Format("dict[Tag.{0}] = {1}(data, {2}); // {3}",
+                return string.Format("dict[Tag.{0}] = {1}(regs, {2}); // {3}",
                     p.Name, p.ConversionName, args, p.Comment);
 			})) #>
 		}

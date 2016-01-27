@@ -196,6 +196,7 @@ namespace ModbusImportShell
                 var tmp = tmpg.GetInstanceOf("Parser");
                 tmp.Add("outs", outputs);
                 tmp.Add("nregs", Nregs);
+                tmp.Add("slaveaddr", MbImpUtils.GetSlaveAddress(selectedSlave));
 
                 var result = tmp.Render(78);
                 if (outfile != string.Empty)

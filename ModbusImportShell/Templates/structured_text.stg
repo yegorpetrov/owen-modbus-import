@@ -10,7 +10,7 @@
 	default:"ANY"
 ]
 
-Parser(outs, nregs) ::= <<
+Parser(outs, nregs, slaveaddr) ::= <<
 VAR
 	<outs:{out | <out.Name>: <typeMap.(out.ConversionName)>;  // <out.Comment><\n>}>
 END_VAR

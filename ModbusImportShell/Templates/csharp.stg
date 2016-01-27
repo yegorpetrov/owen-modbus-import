@@ -1,4 +1,8 @@
-﻿Parser(outs, nregs) ::= <<
+﻿Parser(outs, nregs, slaveaddr) ::= <<
+/* Generated file. Don't edit. */
+
+using System.Collections.Generic;
+
 namespace Project.PLCComm
 {
     public enum Tag
@@ -8,7 +12,8 @@ namespace Project.PLCComm
 
     partial class PLCReader
     {
-        static readonly ushort Nregs = <nregs>;
+        static readonly ushort NREGS = <nregs>;
+        static readonly byte ADDR = <slaveaddr>;
 
         static void Parse(IDictionary\<Tag, object> dict, ushort[] regs)
         {
