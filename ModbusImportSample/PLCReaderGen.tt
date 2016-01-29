@@ -30,7 +30,8 @@
 	{
 		new RefineBitAccessFromConfig(slave),
 		new RefineUnused(),
-		new FixCommentEncoding(Encoding.GetEncoding(1251), Encoding.GetEncoding(1252))
+		new FixCommentEncoding(Encoding.GetEncoding(1251), Encoding.GetEncoding(1252)),
+		new RemoveCommonPrefix()
 	};
 
 	foreach (var refiner in refinery)
