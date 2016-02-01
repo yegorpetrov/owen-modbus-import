@@ -31,13 +31,18 @@ namespace ModbusImport.Output
         private static readonly TraceSource TRACE = new TraceSource(nameof(ModbusImport));
 
         static readonly IDictionary<string, int> channelSize = new Dictionary<string, int>();
+        private const string
+            ByteOutput = "ByteOutput",
+            WordOutput = "WordOutput",
+            DWordOutput = "DWordOutput",
+            FloatOutput = "FloatOutput";
 
         static AbstractOutput()
         {
-            channelSize["ByteOutput"] = 1;
-            channelSize["WordOutput"] = 2;
-            channelSize["DWordOutput"] = 4;
-            channelSize["FloatOutput"] = 4;
+            channelSize[ByteOutput] = 1;
+            channelSize[WordOutput] = 2;
+            channelSize[DWordOutput] = 4;
+            channelSize[FloatOutput] = 4;
         }
 
         protected AbstractOutput(string name, string iecAddress, int regOffset)
@@ -89,11 +94,14 @@ namespace ModbusImport.Output
 
         public static IEnumerable<AbstractOutput> CreateFromConfig(IEnumerable<ConfigEntry> nameAndTypeEntries, Action<ushort> regCounter)
         {
+            if (nameAndTypeEntries == null) throw new ArgumentNullException(nameof(nameAndTypeEntries));
+            if (regCounter == null) throw new ArgumentNullException(nameof(regCounter));
+
             int i = 0;
             foreach (var cfgEntry in nameAndTypeEntries)
             {
                 int size = 0;
-                if (channelSize.TryGetValue(cfgEntry.TypeName, out size))
+                if (channelSize.TryGetValue(cfgEntry.TypeName ?? "", out size))
                 {
                     var regOffset = (i = roundUp(i, size)) / 2;
                     AbstractOutput result = null;

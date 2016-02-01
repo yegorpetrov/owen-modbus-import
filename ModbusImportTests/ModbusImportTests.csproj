@@ -17,7 +17,7 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2016.2.1.0844</AssemblyVersion>
+    <AssemblyVersion>2016.2.1.0953</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CodesysWrapperTests.cs" />
+    <Compile Include="Output\AbstractOutputTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
