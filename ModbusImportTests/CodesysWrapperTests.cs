@@ -12,9 +12,11 @@ namespace ModbusImport.Tests
     [TestClass()]
     public class CodesysWrapperTests
     {
+        const string WRAPPERTEST = nameof(CodesysWrapperTests);
+
         CodesysWrapper wrapper;
 
-        [TestInitialize()]
+        [TestInitialize(), TestCategory(WRAPPERTEST)]
         public void CodesysWrapperTest()
         {
             var prj =
@@ -25,26 +27,26 @@ namespace ModbusImport.Tests
             wrapper = new CodesysWrapper(prj);
         }
 
-        [TestCleanup()]
+        [TestCleanup(), TestCategory(WRAPPERTEST)]
         public void DisposeTest()
         {
             wrapper.Dispose();
             wrapper = null;
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory(WRAPPERTEST)]
         public void GetObjectCountTest()
         {
             Assert.AreEqual(1, wrapper.GetObjectCount("{9A9A3E9A-D363-11d5-823E-0050DA6124B7}"));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory(WRAPPERTEST)]
         public void GetObjectNameTest()
         {
             Assert.AreEqual("PLC_PRG", wrapper.GetObjectName("{9A9A3E90-D363-11d5-823E-0050DA6124B7}", 0));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory(WRAPPERTEST)]
         public void ReadObjectTest()
         {
             Assert.IsTrue(wrapper.ReadObject("PLC_PRG", "{9A9A3E90-D363-11d5-823E-0050DA6124B7}").StartsWith("<?xml"));
