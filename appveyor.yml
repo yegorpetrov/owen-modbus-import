@@ -2,3 +2,6 @@ test:
   categories:
     except:
       - CodesysWrapperTests
+
+before_build:
+  - nuget restore
