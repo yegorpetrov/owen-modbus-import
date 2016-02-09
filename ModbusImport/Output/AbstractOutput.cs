@@ -107,16 +107,16 @@ namespace ModbusImport.Output
                     AbstractOutput result = null;
                     switch (cfgEntry.TypeName)
                     {
-                        case "ByteOutput":
+                        case ByteOutput:
                             result = new ByteOutput(cfgEntry.Name, cfgEntry.IecAddress, regOffset, (byte)(i % 2), false);
                             break;
-                        case "WordOutput":
+                        case WordOutput:
                             result = new WordOutput(cfgEntry.Name, cfgEntry.IecAddress, regOffset, false);
                             break;
-                        case "DWordOutput":
+                        case DWordOutput:
                             result = new DWordOutput(cfgEntry.Name, cfgEntry.IecAddress, regOffset, false);
                             break;
-                        case "FloatOutput":
+                        case FloatOutput:
                             result = new FloatOutput(cfgEntry.Name, cfgEntry.IecAddress, regOffset);
                             break;
                     }
